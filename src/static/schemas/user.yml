@@ -1,0 +1,14 @@
+user:
+  required:
+   - username
+   - password
+  type: object
+  properties:
+    username:
+      type: string
+      description: new username
+      example: "username"
+    password:
+      type: string
+      description: password
+      example: "password"

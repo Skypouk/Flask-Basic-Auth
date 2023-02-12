@@ -1,0 +1,72 @@
+openapi: 3.0.0
+
+info:
+  description: 'This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.'
+  version: 18.0.0
+  title: A
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: /
+
+tags:
+  - name: Data
+    description: Protected Data
+  - name: User
+    description: User endpoints
+
+paths:
+  /request:
+    get:
+      operationId: src.endpoints.get_data
+      tags:
+        - Data
+      summary: Get access to protected data by authentification
+      responses:
+        '200':
+          description: OK
+      security:
+        - basicAuth: []
+
+  /user:
+    post:
+      operationId: src.endpoints.post_user
+      tags:
+        - User
+      summary: Pso new username and password
+      requestBody:
+        description: save new username and password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        '200':
+          description: User created
+          content: {}
+        '500':
+          description: User creation failed
+          content: {}
+components:
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+      x-basicInfoFunc: src.endpoints.check_basic_auth
+
+  schemas:
+    user:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          description: new username
+          example: "username"
+        password:
+          type: string
+          description: password
+          example: "password"
